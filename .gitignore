@@ -1,0 +1,16 @@
+*.orig
+*.o
+*.a
+u-boot*
+uboot.bin
+.depend
+.config
+.menuconfig.log
+.tmp_config
+System.map
+autoconf.h
+tools/mkimage
+.config.old
+*~
+*.old
+tags
