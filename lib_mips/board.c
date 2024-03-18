@@ -2045,7 +2045,8 @@ void board_init_r (gd_t *id, ulong dest_addr)
 	    timer1 = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_BOOTDELAY;
 	}
 
-	OperationSelect();   
+	OperationSelect();
+
 	while (timer1 > 0) {
 		--timer1;
 		/* delay 100 * 10ms */
@@ -2063,6 +2064,30 @@ void board_init_r (gd_t *id, ulong dest_addr)
 		printf ("\b\b\b%2d ", timer1);
 	}
 	putc ('\n');
+
+	/* Check if the recovery button is pressed */
+	int gpio_argc = 3;
+	int gpio_count = 0;
+	char * gpio_argv[4];
+
+	gpio_argv[1] = "0x42";
+	gpio_argv[2] = "value";
+	if (0 == do_gpio(cmdtp, 0, gpio_argc, gpio_argv)) {
+		printf("The recovery button is pressed to start the detection ...\n");
+		/* delay 10 * 300ms */
+		for (gpio_count = 0; gpio_count < 10; ++gpio_count) {
+			if (0 == do_gpio(cmdtp, 0, gpio_argc, gpio_argv)) {
+				mdelay(300);
+				continue;
+			} else {
+				break;
+			}
+		}
+		if (gpio_count == 10) {
+			BootType = '3';
+		}
+	}
+
 	if(BootType == '3') {
 		char *argv[2];
 		sprintf(addr_str, "0x%X", CFG_KERN_ADDR);

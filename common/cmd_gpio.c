@@ -33,6 +33,7 @@ u32 FB_OFFSET_DIR 	= GPIO23_00_DIR;
 u32 FB_OFFSET_PAL 	= GPIO23_00_POL;
 u32 FB_BIT_BASE_OFF	= 0;
 
+// #define CMD_GPIO_DEBUG
 #if 1
 #define dprint(f, a...) 	printf(f, ##a)
 #else
@@ -139,6 +140,7 @@ void ralink_gpio_info(struct ralink_gpio_chip *rg, u32 gpio)
 	// dprint("offset:\t %08x\n", rg->mem_offset);
 	// dprint("base:\t %08d\n", rg->gpio_base);
 	// dprint("ngpio:\t %08d\n", rg->num_gpio);	
+#ifdef CMD_GPIO_DEBUG
 	dprint("item \t address  value    31----24 23----16 FEDCBA98 76543210 \n");	
 	dprint("mode:\t %08x %08x ", RALINK_SYSCTL_BASE + 0x60, gpio_mode);	
 	pb(gpio_mode);
@@ -154,7 +156,7 @@ void ralink_gpio_info(struct ralink_gpio_chip *rg, u32 gpio)
 	pb(dir); 
 	dprint("pol:\t %08x %08x ", RALINK_PIO_BASE + rg->mem_offset + rg->regs[GPIO_REG_POL], pol);
 	pb(pol); 
-
+#endif
 	dprint("gpio: %d, ", gpio);
 	dprint("offset: %d, ", offset);	
 	dprint("value: %d, ", (data >> offset) & 1);
