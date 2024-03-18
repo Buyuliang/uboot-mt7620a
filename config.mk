@@ -1,7 +1,8 @@
 #####################################################################
 # Please executes 'make menuconfig' to config your own uboot
 #####################################################################
--include $(TOPDIR)/.config
+# -include $(TOPDIR)/.config
+-include $(TOPDIR)/configs/ClusterBox_deconfig
 
 #################<< Test function option Configuration >>###################
 #----------------------------------------

@@ -14,3 +14,4 @@ tools/mkimage
 *~
 *.old
 tags
+lxdialog
