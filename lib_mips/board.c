@@ -2065,13 +2065,24 @@ void board_init_r (gd_t *id, ulong dest_addr)
 	}
 	putc ('\n');
 
-	/* Check if the recovery button is pressed */
-	int gpio_argc = 3;
+	int gpio_argc;
 	int gpio_count = 0;
-	char * gpio_argv[4];
+	char *gpio_argv[4];
 
+	// Power on the backplane
+	gpio_argc = 4;
+	gpio_argv[1] = "0x46";
+	gpio_argv[2] = "dir";
+	gpio_argv[3] = "1";
+	do_gpio(cmdtp, 0, gpio_argc, gpio_argv);
+	gpio_argv[2] = "value";
+	do_gpio(cmdtp, 0, gpio_argc, gpio_argv);
+
+	/* Check if the recovery button is pressed */
+	gpio_argc = 3;
 	gpio_argv[1] = "0x42";
 	gpio_argv[2] = "value";
+	gpio_argv[3] = 0;
 	if (0 == do_gpio(cmdtp, 0, gpio_argc, gpio_argv)) {
 		printf("The recovery button is pressed to start the detection ...\n");
 		/* delay 10 * 300ms */
